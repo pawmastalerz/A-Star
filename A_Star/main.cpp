@@ -8,17 +8,12 @@
 
 using namespace std;
 
-int main()
-{
-    char nodeValues[20][20];
-    for (int i = 0; i < 20; i++)
-        {
-            for(int j = 0; j < 20; j++)
-            {
-                nodeValues[i][j] = '0';
-            }
-        }
 
+char nodeValues[20][20];
+
+
+void readNodeValuesFromFile()
+{
     FILE *inputGrid;
     inputGrid = fopen("C:\\Users\\Home\\Desktop\\A gwiazdka\\Pawel_Mastalerz\\AStar\\A_Star\\bin\\Debug\\grid.txt", "r");
     if (inputGrid != NULL)
@@ -28,14 +23,17 @@ int main()
         {
             for(int j = 0; j < 20; j++)
             {
-                fgets(gridNumericValue, 3, inputGrid); // Same here. It works, so not like I'm complaining.
+                fgets(gridNumericValue, 3, inputGrid); // Same here. It works, so not that I'm complaining.
                 nodeValues[i][j] = (gridNumericValue[0]);
             }
         }
     }
     else cout << "Input grid file missing" << endl;
     fclose(inputGrid);
+}
 
+void showNodeValues()
+{
     for(int i = 0; i < 20; i++)
     {
         for(int j = 0; j < 20; j++)
@@ -44,5 +42,12 @@ int main()
         }
         cout << endl;
     }
+}
+
+int main()
+{
+    readNodeValuesFromFile();
+    showNodeValues();
+
     return 0;
 }
