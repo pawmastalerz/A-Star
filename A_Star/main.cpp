@@ -11,7 +11,8 @@ using namespace std;
 
 char nodeValues[20][20];
 int hValues[20][20];
-
+bool openList[20][20];
+bool closedList[20][20];
 
 void readNodeValuesFromFile()
 {
@@ -51,7 +52,7 @@ void calculateHValues()
     {
         for(int j = 0; j < 20; j++)
         {
-            hValues[i][j] = 19 - j + i;
+            hValues[i][j] = i + j;
         }
     }
 }
@@ -68,11 +69,39 @@ void showHValues()
     }
 }
 
+void startLists()
+{
+    for(int i = 0; i < 20; i++)
+    {
+        for(int j = 0; j < 20; j++)
+        {
+            closedList[i][j] = false;
+        }
+    }
+
+    for(int i = 0; i < 20; i++)
+    {
+        for(int j = 0; j < 20; j++)
+        {
+            openList[i][j] = false;
+        }
+    }
+}
+
 int main()
 {
     readNodeValuesFromFile();
     calculateHValues();
-    showHValues();
+    startLists();
+
+//    for(int i = 0; i < 20; i++)
+//    {
+//        for(int j = 0; j < 20; j++)
+//        {
+//            cout << openList[i][j] << " ";
+//        }
+//        cout << endl;
+//    }
 
     return 0;
 }
