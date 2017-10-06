@@ -13,11 +13,12 @@ char nodeValues[20][20];
 int hValues[20][20];
 bool openList[20][20];
 bool closedList[20][20];
-int currentX = 0;
-int currentY = 0;
-string parent[20][20];
+int currentX = 19;
+int currentY = 1;
+int parentX[20][20];
+int parentY[20][20];
 
-void readNodeValuesFromFile() // EUKLIDEAN CHECK
+void readNodeValuesFromFile()
 {
     FILE *inputGrid;
     inputGrid = fopen("C:\\Users\\Home\\Desktop\\A gwiazdka\\Pawel_Mastalerz\\AStar\\A_Star\\bin\\Debug\\grid.txt", "r");
@@ -70,7 +71,8 @@ void startListsAndArrays()
     {
         for(int j = 0; j < 20; j++)
         {
-            parent[i][j] = "undef";
+            parentX[i][j] = 99;
+            parentY[i][j] = 99;
         }
     }
 }
@@ -80,14 +82,45 @@ void closeCurrent()
     closedList[currentX][currentY] = true;
 }
 
-//int goUp()
-//{
-//    if ((currentY + 1) > 19) || closedList[currentX][currentY - 1] == true) return 0;
-//    else
-//    {
-//        parent[currentX][current]
-//    }
-//}
+int goUp()
+{
+    if (((currentY + 1) > 19) || (closedList[currentX][currentY + 1] == true)) return 0;
+    else
+    {
+        parentX[currentX][currentY + 1] = currentX;
+        parentY[currentX][currentY + 1] = currentY;
+    }
+}
+
+int goDown()
+{
+    if (((currentY - 1) < 0) || (closedList[currentX][currentY - 1] == true)) return 0;
+    else
+    {
+        parentX[currentX][currentY - 1] = currentX;
+        parentY[currentX][currentY - 1] = currentY;
+    }
+}
+
+int goLeft()
+{
+    if (((currentX - 1) < 0) || (closedList[currentX - 1][currentY] == true)) return 0;
+    else
+    {
+        parentX[currentX - 1][currentY] = currentX;
+        parentY[currentX - 1][currentY] = currentY;
+    }
+}
+
+int goRight()
+{
+    if (((currentX + 1) > 19) || (closedList[currentX + 1][currentY] == true)) return 0;
+    else
+    {
+        parentX[currentX + 1][currentY] = currentX;
+        parentY[currentX + 1][currentY] = currentY;
+    }
+}
 
 int main()
 {
@@ -96,17 +129,19 @@ int main()
     calculateHValues();
 
     closeCurrent();
+    goUp();
+    goDown();
+    goLeft();
+    goRight();
 
     for (int i = 19; i >= 0; i--)
     {
         for(int j = 0; j < 20; j++)
         {
-            cout << hValues[j][i] << " ";
+            cout << parentY[j][i] << " ";
         }
         cout << endl;
     }
-//    cout << endl << endl;
-//    cout << nodeValues[11][0];
 
     return 0;
 }
