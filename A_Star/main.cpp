@@ -13,6 +13,9 @@ char nodeValues[20][20];
 int hValues[20][20];
 bool openList[20][20];
 bool closedList[20][20];
+int currentX = 0;
+int currentY = 0;
+int parent[20][20];
 
 void readNodeValuesFromFile()
 {
@@ -69,7 +72,7 @@ void showHValues()
     }
 }
 
-void startLists()
+void startListsAndArrays()
 {
     for(int i = 0; i < 20; i++)
     {
@@ -86,22 +89,37 @@ void startLists()
             openList[i][j] = false;
         }
     }
+
+    for(int i = 0; i < 20; i++)
+    {
+        for(int j = 0; j < 20; j++)
+        {
+            parent[i][j] = 99;
+        }
+    }
+}
+
+void closeCurrent()
+{
+    closedList[currentX][currentY] = true;
 }
 
 int main()
 {
     readNodeValuesFromFile();
+    startListsAndArrays();
     calculateHValues();
-    startLists();
 
-//    for(int i = 0; i < 20; i++)
-//    {
-//        for(int j = 0; j < 20; j++)
-//        {
-//            cout << openList[i][j] << " ";
-//        }
-//        cout << endl;
-//    }
+    closeCurrent();
+
+    for(int i = 0; i < 20; i++)
+    {
+        for(int j = 0; j < 20; j++)
+        {
+            cout << closedList[i][j] << " ";
+        }
+        cout << endl;
+    }
 
     return 0;
 }
