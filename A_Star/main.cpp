@@ -10,6 +10,7 @@ using namespace std;
 
 
 char nodeValues[20][20];
+int hValues[20][20];
 
 
 void readNodeValuesFromFile()
@@ -44,10 +45,34 @@ void showNodeValues()
     }
 }
 
+void calculateHValues()
+{
+    for (int i = 0; i < 20; i++)
+    {
+        for(int j = 0; j < 20; j++)
+        {
+            hValues[i][j] = 19 - j + i;
+        }
+    }
+}
+
+void showHValues()
+{
+    for(int i = 0; i < 20; i++)
+    {
+        for(int j = 0; j < 20; j++)
+        {
+            cout << hValues[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
 int main()
 {
     readNodeValuesFromFile();
-    showNodeValues();
+    calculateHValues();
+    showHValues();
 
     return 0;
 }
