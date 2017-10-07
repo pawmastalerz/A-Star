@@ -92,7 +92,10 @@ void calculateFValue(int x, int y)
 
 int goUp()
 {
-    if (((currentY + 1) > 19) || (closedList[currentX][currentY + 1] == true)) return 0;
+    if (
+        ((currentY + 1) > 19) ||
+        (closedList[currentX][currentY + 1] == true) ||
+        (nodeValues[currentX][currentY + 1] == '5')) return 0;
     else
     {
         openNode(currentX, currentY + 1);
@@ -105,7 +108,10 @@ int goUp()
 
 int goDown()
 {
-    if (((currentY - 1) < 0) || (closedList[currentX][currentY - 1] == true)) return 0;
+    if (
+        ((currentY - 1) < 0) ||
+        (closedList[currentX][currentY - 1] == true) ||
+        (nodeValues[currentX][currentY - 1] == '5')) return 0;
     else
     {
         openNode(currentX, currentY - 1);
@@ -118,7 +124,10 @@ int goDown()
 
 int goLeft()
 {
-    if (((currentX - 1) < 0) || (closedList[currentX - 1][currentY] == true)) return 0;
+    if (
+        ((currentX - 1) < 0) ||
+        (closedList[currentX - 1][currentY] == true) ||
+        (nodeValues[currentX - 1][currentY] == '5')) return 0;
     else
     {
         openNode(currentX - 1, currentY);
@@ -131,7 +140,10 @@ int goLeft()
 
 int goRight()
 {
-    if (((currentX + 1) > 19) || (closedList[currentX + 1][currentY] == true)) return 0;
+    if (
+        ((currentX + 1) > 19) ||
+        (closedList[currentX + 1][currentY] == true) ||
+        (nodeValues[currentX + 1][currentY] == '5')) return 0;
     else
     {
         openNode(currentX + 1, currentY);
@@ -183,11 +195,17 @@ int main()
     readNodeValuesFromFile();
     startListsAndArrays();
 
+
     closeNode(currentX, currentY);
     goUp();
     goDown();
     goLeft();
     goRight();
+
+    currentX = calculateLowestFXPos();
+    currentY = calculateLowestFYPos();
+
+    closeNode(currentX, currentY); //8:06
 
     for (int i = 19; i >= 0; i--)
     {
@@ -198,8 +216,8 @@ int main()
         cout << endl;
     }
 
-    cout << calculateLowestFXPos() << endl;
-    cout << calculateLowestFYPos() << endl;
+//    cout << calculateLowestFXPos() << endl;
+//    cout << calculateLowestFYPos() << endl;
 
     return 0;
 }
