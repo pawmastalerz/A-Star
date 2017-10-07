@@ -11,10 +11,12 @@ using namespace std;
 
 char nodeValues[20][20];
 int hValues[20][20];
+int gValues[20][20];
+int fValues[20][20];
 bool openList[20][20];
 bool closedList[20][20];
-int currentX = 19;
-int currentY = 1;
+int currentX = 0;
+int currentY = 0;
 int parentX[20][20];
 int parentY[20][20];
 
@@ -38,17 +40,6 @@ void readNodeValuesFromFile()
     fclose(inputGrid);
 }
 
-void calculateHValues()
-{
-    for (int i = 0; i < 20; i++)
-    {
-        for (int j = 0; j < 20; j++)
-        {
-            hValues[i][j] = i + j;
-        }
-    }
-}
-
 void startListsAndArrays()
 {
     for(int i = 0; i < 20; i++)
@@ -56,30 +47,26 @@ void startListsAndArrays()
         for(int j = 0; j < 20; j++)
         {
             closedList[i][j] = false;
-        }
-    }
-
-    for(int i = 0; i < 20; i++)
-    {
-        for(int j = 0; j < 20; j++)
-        {
             openList[i][j] = false;
+            parentX[i][j] = 999;
+            parentY[i][j] = 999;
+            hValues[i][j] = 999;
+            gValues[i][j] = 999;
+            fValues[i][j] = 999;
         }
     }
-
-    for(int i = 0; i < 20; i++)
-    {
-        for(int j = 0; j < 20; j++)
-        {
-            parentX[i][j] = 99;
-            parentY[i][j] = 99;
-        }
-    }
+    closedList[0][0] = true;
+    gValues[0][0] = 0;
 }
 
 void closeCurrent()
 {
     closedList[currentX][currentY] = true;
+}
+
+void calculateGValue(int x, int y)
+{
+    gValues[x][y] = gValues[parentX[x][y]][parentY[x][y]] + 1;
 }
 
 int goUp()
@@ -89,6 +76,7 @@ int goUp()
     {
         parentX[currentX][currentY + 1] = currentX;
         parentY[currentX][currentY + 1] = currentY;
+        calculateGValue(currentX, currentY + 1);
     }
 }
 
@@ -99,6 +87,7 @@ int goDown()
     {
         parentX[currentX][currentY - 1] = currentX;
         parentY[currentX][currentY - 1] = currentY;
+        calculateGValue(currentX, currentY - 1);
     }
 }
 
@@ -109,6 +98,7 @@ int goLeft()
     {
         parentX[currentX - 1][currentY] = currentX;
         parentY[currentX - 1][currentY] = currentY;
+        calculateGValue(currentX - 1, currentY);
     }
 }
 
@@ -119,6 +109,7 @@ int goRight()
     {
         parentX[currentX + 1][currentY] = currentX;
         parentY[currentX + 1][currentY] = currentY;
+        calculateGValue(currentX + 1, currentY);
     }
 }
 
@@ -126,7 +117,6 @@ int main()
 {
     readNodeValuesFromFile();
     startListsAndArrays();
-    calculateHValues();
 
     closeCurrent();
     goUp();
@@ -138,7 +128,7 @@ int main()
     {
         for(int j = 0; j < 20; j++)
         {
-            cout << parentY[j][i] << " ";
+            cout << gValues[j][i] << " ";
         }
         cout << endl;
     }
