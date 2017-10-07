@@ -92,24 +92,25 @@ void calculateFValue(int x, int y)
     fValues[x][y] = gValues[x][y] + hValues[x][y];
 }
 
+void checkAlreadyOpened(int x, int y)
+{
+    if ( (gValues[currentX][currentY] + 1) < gValues[x][y] )
+    {
+        parentX[x][y] = parentX[currentX][currentY];
+        parentY[x][y] = parentY[currentX][currentY];
+    }
+}
+
 int goUp()
 {
     if (
         ((currentY + 1) > 19) ||
         (closedList[currentX][currentY + 1] == true) ||
         (nodeValues[currentX][currentY + 1] == '5')) return 0;
-//    else if (openedList[currentX][currentY + 1] == true)
-//    {
-//        if ( (gValues[currentX][currentY] + 1) < gValues[currentX][currentY + 1] )
-//        {
-//            parentX[currentX][currentY + 1] = currentX;
-//            parentY[currentX][currentY + 1] = currentY;
-//            currentY++;
-//            cancelOpenNode(currentX, currentY);
-//            closeNode(currentX, currentY);
-//            return 2;
-//        }
-//    }
+    else if (openedList[currentX][currentY + 1] == true)
+    {
+        checkAlreadyOpened(currentX, currentY + 1);
+    }
     else
     {
         openNode(currentX, currentY + 1);
@@ -126,18 +127,10 @@ int goDown()
         ((currentY - 1) < 0) ||
         (closedList[currentX][currentY - 1] == true) ||
         (nodeValues[currentX][currentY - 1] == '5')) return 0;
-//    else if (openedList[currentX][currentY - 1] == true)
-//    {
-//        if ( (gValues[currentX][currentY] + 1) < gValues[currentX][currentY - 1] )
-//        {
-//            parentX[currentX][currentY - 1] = currentX;
-//            parentY[currentX][currentY - 1] = currentY;
-//            currentY--;
-//            cancelOpenNode(currentX, currentY);
-//            closeNode(currentX, currentY);
-//            return 2;
-//        }
-//    }
+    else if (openedList[currentX][currentY - 1] == true)
+    {
+        checkAlreadyOpened(currentX, currentY - 1);
+    }
     else
     {
         openNode(currentX, currentY - 1);
@@ -154,18 +147,10 @@ int goLeft()
         ((currentX - 1) < 0) ||
         (closedList[currentX - 1][currentY] == true) ||
         (nodeValues[currentX - 1][currentY] == '5')) return 0;
-//    else if (openedList[currentX - 1][currentY] == true)
-//    {
-//        if ( (gValues[currentX][currentY] + 1) < gValues[currentX - 1][currentY] )
-//        {
-//            parentX[currentX - 1][currentY] = currentX;
-//            parentY[currentX - 1][currentY] = currentY;
-//            currentX--;
-//            cancelOpenNode(currentX, currentY);
-//            closeNode(currentX, currentY);
-//            return 2;
-//        }
-//    }
+    else if (openedList[currentX - 1][currentY] == true)
+    {
+        checkAlreadyOpened(currentX - 1, currentY);
+    }
     else
     {
         openNode(currentX - 1, currentY);
@@ -182,18 +167,10 @@ int goRight()
         ((currentX + 1) > 19) ||
         (closedList[currentX + 1][currentY] == true) ||
         (nodeValues[currentX + 1][currentY] == '5')) return 0;
-//    else if (openedList[currentX + 1][currentY] == true)
-//    {
-//        if ( (gValues[currentX][currentY] + 1) < gValues[currentX + 1][currentY] )
-//        {
-//            parentX[currentX + 1][currentY] = currentX;
-//            parentY[currentX + 1][currentY] = currentY;
-//            currentX++;
-//            cancelOpenNode(currentX, currentY);
-//            closeNode(currentX, currentY);
-//            return 2;
-//        }
-//    }
+    else if (openedList[currentX + 1][currentY] == true)
+    {
+        checkAlreadyOpened(currentX + 1, currentY);
+    }
     else
     {
         openNode(currentX + 1, currentY);
@@ -266,7 +243,6 @@ int main()
     startListsAndArrays();
 
     while (!(currentX == 19) || !(currentY == 19))
-    //for (int i = 0; i < 10; i++)
     {
         closeNode(currentX, currentY);
         goUp();
