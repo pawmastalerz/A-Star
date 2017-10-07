@@ -96,6 +96,15 @@ int goUp()
         ((currentY + 1) > 19) ||
         (closedList[currentX][currentY + 1] == true) ||
         (nodeValues[currentX][currentY + 1] == '5')) return 0;
+    else if (openedList[currentX][currentY + 1] == true)
+    {
+        if ( (gValues[currentX][currentY] + 1) < gValues[currentX][currentY + 1] )
+        {
+            parentX[currentX][currentY + 1] = currentX;
+            parentY[currentX][currentY + 1] = currentY;
+            return 2;
+        }
+    }
     else
     {
         openNode(currentX, currentY + 1);
@@ -112,6 +121,15 @@ int goDown()
         ((currentY - 1) < 0) ||
         (closedList[currentX][currentY - 1] == true) ||
         (nodeValues[currentX][currentY - 1] == '5')) return 0;
+    else if (openedList[currentX][currentY - 1] == true)
+    {
+        if ( (gValues[currentX][currentY] + 1) < gValues[currentX][currentY - 1] )
+        {
+            parentX[currentX][currentY - 1] = currentX;
+            parentY[currentX][currentY - 1] = currentY;
+            return 2;
+        }
+    }
     else
     {
         openNode(currentX, currentY - 1);
@@ -128,6 +146,15 @@ int goLeft()
         ((currentX - 1) < 0) ||
         (closedList[currentX - 1][currentY] == true) ||
         (nodeValues[currentX - 1][currentY] == '5')) return 0;
+    else if (openedList[currentX - 1][currentY] == true)
+    {
+        if ( (gValues[currentX][currentY] + 1) < gValues[currentX - 1][currentY] )
+        {
+            parentX[currentX - 1][currentY] = currentX;
+            parentY[currentX - 1][currentY] = currentY;
+            return 2;
+        }
+    }
     else
     {
         openNode(currentX - 1, currentY);
@@ -144,6 +171,15 @@ int goRight()
         ((currentX + 1) > 19) ||
         (closedList[currentX + 1][currentY] == true) ||
         (nodeValues[currentX + 1][currentY] == '5')) return 0;
+    else if (openedList[currentX + 1][currentY] == true)
+    {
+        if ( (gValues[currentX][currentY] + 1) < gValues[currentX + 1][currentY] )
+        {
+            parentX[currentX + 1][currentY] = currentX;
+            parentY[currentX + 1][currentY] = currentY;
+            return 2;
+        }
+    }
     else
     {
         openNode(currentX + 1, currentY);
