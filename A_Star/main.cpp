@@ -1,4 +1,6 @@
 //C++ A* ("A Star") algorithm.
+//Under no circumstances don't copy it
+//for less than 4 honey - flavoured beers.
 //ALL RIGHTS RESERVED to Pawel Mastalerz
 //University of Warmia and Mazury, Poland
 
@@ -23,20 +25,18 @@ int parentY[20][20] = {0};
 int lowestFXPos = 0;
 int lowestFYPos = 0;
 
-
-
 void readNodeValuesFromFile()
 {
     FILE *inputGrid;
     inputGrid = fopen("C:\\Users\\Home\\Desktop\\A gwiazdka\\Pawel_Mastalerz\\AStar\\A_Star\\bin\\Debug\\grid.txt", "r");
     if (inputGrid != NULL)
     {
-        char gridNumericValue[3]; // No idea why there should be 3 instead of 2.
+        char gridNumericValue[3];
         for (int i = 19; i >= 0; i--)
         {
             for(int j = 0; j < 20; j++)
             {
-                fgets(gridNumericValue, 3, inputGrid); // Same here. It works, so not that I'm complaining.
+                fgets(gridNumericValue, 3, inputGrid);
                 nodeValues[j][i] = (gridNumericValue[0]);
             }
         }
@@ -73,17 +73,13 @@ void startListsAndArrays()
 void closeNode(int x, int y)
 {
     closedList[x][y] = true;
+    openedList[x][y] = false;
 }
 
 void openNode(int x, int y)
 {
     openedList[x][y] = true;
     openingOrder[x][y] = openingCount++;
-}
-
-void cancelOpenNode(int x, int y)
-{
-    openedList[x][y] = false;
 }
 
 void calculateGValue(int x, int y)
@@ -212,9 +208,9 @@ void calculateLowestFPos()
 {
     int lowestF = 9999;
     //Find lowest f amongst opened:
-    for (int i = 0; i < 19; i++)
+    for (int i = 0; i < 20; i++)
     {
-        for (int j = 0; j < 19; j++)
+        for (int j = 0; j < 20; j++)
         {
             if ((openedList[i][j] == true) && (fValues[i][j] < lowestF))
             {
@@ -229,25 +225,25 @@ void calculateLowestFPos()
     }
 
     //Find out if there are any duplicates of lowest value:
-    int duplicateCounter = 0;
-    for (int i = 0; i < 19; i++)
+    int duplicateCount = 0;
+    for (int i = 0; i < 20; i++)
     {
-        for (int j = 0; j < 19; j++)
+        for (int j = 0; j < 20; j++)
         {
             if ((openedList[i][j] == true) && (fValues[i][j] == lowestF))
             {
-                duplicateCounter++;
-//                cout << "Number of duplicates: " << duplicateCounter << endl;
+                duplicateCount++;
+//                cout << "Number of duplicates: " << duplicateCount << endl;
             }
         }
     }
     // If there are more than 1 duplicates pick the one with the lowest opening count:
-    if (duplicateCounter > 1)
+    if (duplicateCount > 1)
     {
         int lowestOpeningCount = 9999;
-        for (int i = 0; i < 19; i++)
+        for (int i = 0; i < 20; i++)
         {
-            for (int j = 0; j < 19; j++)
+            for (int j = 0; j < 20; j++)
             {
                 if ((openedList[i][j] == true) && (fValues[i][j] == lowestF) && (openingOrder[i][j] < lowestOpeningCount))
                 {
@@ -269,10 +265,9 @@ int main()
     readNodeValuesFromFile();
     startListsAndArrays();
 
-    while ((currentX < 18) || (currentY < 18))
+    while (!(currentX == 19) || !(currentY == 19))
     //for (int i = 0; i < 10; i++)
     {
-        cancelOpenNode(currentX, currentY);
         closeNode(currentX, currentY);
         goUp();
         goDown();
@@ -288,7 +283,7 @@ int main()
         for(int j = 0; j < 20; j++)
         {
             if (nodeValues[j][i] == '5') cout << "5 "; else
-            cout << fValues[j][i] << " ";
+            cout << parentY[j][i] << " ";
         }
         cout << endl;
     }
