@@ -40,6 +40,17 @@ void readNodeValuesFromFile()
     fclose(inputGrid);
 }
 
+void calculateHValues()
+{
+    for (int i = 19; i >= 0; i--)
+    {
+        for(int j = 0; j < 20; j++)
+        {
+            hValues[j][i] = j + i;
+        }
+    }
+}
+
 void startListsAndArrays()
 {
     for(int i = 0; i < 20; i++)
@@ -50,9 +61,9 @@ void startListsAndArrays()
             openList[i][j] = false;
             parentX[i][j] = 999;
             parentY[i][j] = 999;
-            hValues[i][j] = 999;
             gValues[i][j] = 999;
             fValues[i][j] = 999;
+            calculateHValues();
         }
     }
     closedList[0][0] = true;
@@ -77,6 +88,7 @@ int goUp()
         parentX[currentX][currentY + 1] = currentX;
         parentY[currentX][currentY + 1] = currentY;
         calculateGValue(currentX, currentY + 1);
+        //calculateHValue(currentX, currentY + 1);
     }
 }
 
@@ -88,6 +100,7 @@ int goDown()
         parentX[currentX][currentY - 1] = currentX;
         parentY[currentX][currentY - 1] = currentY;
         calculateGValue(currentX, currentY - 1);
+        //calculateHValue(currentX, currentY - 1);
     }
 }
 
@@ -99,6 +112,7 @@ int goLeft()
         parentX[currentX - 1][currentY] = currentX;
         parentY[currentX - 1][currentY] = currentY;
         calculateGValue(currentX - 1, currentY);
+        //calculateHValue(currentX - 1, currentY);
     }
 }
 
@@ -110,6 +124,7 @@ int goRight()
         parentX[currentX + 1][currentY] = currentX;
         parentY[currentX + 1][currentY] = currentY;
         calculateGValue(currentX + 1, currentY);
+        //calculateHValue(currentX + 1, currentY);
     }
 }
 
@@ -128,7 +143,7 @@ int main()
     {
         for(int j = 0; j < 20; j++)
         {
-            cout << gValues[j][i] << " ";
+            cout << hValues[j][i] << " ";
         }
         cout << endl;
     }
