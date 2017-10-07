@@ -10,14 +10,18 @@ using namespace std;
 
 char nodeValues[20][20];
 int hValues[20][20];
-int gValues[20][20];
-int fValues[20][20];
+int gValues[20][20] = {0};
+int fValues[20][20] = {0};
 bool openedList[20][20];
+int openingOrder[20][20] = {0};
+int openingCount = 1;
 bool closedList[20][20];
 int currentX = 0;
 int currentY = 0;
-int parentX[20][20];
-int parentY[20][20];
+int parentX[20][20] = {0};
+int parentY[20][20] = {0};
+int lowestFXPos = 0;
+int lowestFYPos = 0;
 
 
 
@@ -60,16 +64,10 @@ void startListsAndArrays()
         {
             closedList[i][j] = false;
             openedList[i][j] = false;
-            parentX[i][j] = 999;
-            parentY[i][j] = 999;
-            gValues[i][j] = 999;
-            fValues[i][j] = 999;
             calculateHValues();
         }
     }
     closedList[0][0] = true;
-    gValues[0][0] = 0;
-    fValues[0][0] = 0;
 }
 
 void closeNode(int x, int y)
@@ -80,6 +78,7 @@ void closeNode(int x, int y)
 void openNode(int x, int y)
 {
     openedList[x][y] = true;
+    openingOrder[x][y] = openingCount++;
 }
 
 void cancelOpenNode(int x, int y)
@@ -103,18 +102,18 @@ int goUp()
         ((currentY + 1) > 19) ||
         (closedList[currentX][currentY + 1] == true) ||
         (nodeValues[currentX][currentY + 1] == '5')) return 0;
-    else if (openedList[currentX][currentY + 1] == true)
-    {
-        if ( (gValues[currentX][currentY] + 1) < gValues[currentX][currentY + 1] )
-        {
-            parentX[currentX][currentY + 1] = currentX;
-            parentY[currentX][currentY + 1] = currentY;
-            currentY++;
-            cancelOpenNode(currentX, currentY);
-            closeNode(currentX, currentY);
-            return 2;
-        }
-    }
+//    else if (openedList[currentX][currentY + 1] == true)
+//    {
+//        if ( (gValues[currentX][currentY] + 1) < gValues[currentX][currentY + 1] )
+//        {
+//            parentX[currentX][currentY + 1] = currentX;
+//            parentY[currentX][currentY + 1] = currentY;
+//            currentY++;
+//            cancelOpenNode(currentX, currentY);
+//            closeNode(currentX, currentY);
+//            return 2;
+//        }
+//    }
     else
     {
         openNode(currentX, currentY + 1);
@@ -131,18 +130,18 @@ int goDown()
         ((currentY - 1) < 0) ||
         (closedList[currentX][currentY - 1] == true) ||
         (nodeValues[currentX][currentY - 1] == '5')) return 0;
-    else if (openedList[currentX][currentY - 1] == true)
-    {
-        if ( (gValues[currentX][currentY] + 1) < gValues[currentX][currentY - 1] )
-        {
-            parentX[currentX][currentY - 1] = currentX;
-            parentY[currentX][currentY - 1] = currentY;
-            currentY--;
-            cancelOpenNode(currentX, currentY);
-            closeNode(currentX, currentY);
-            return 2;
-        }
-    }
+//    else if (openedList[currentX][currentY - 1] == true)
+//    {
+//        if ( (gValues[currentX][currentY] + 1) < gValues[currentX][currentY - 1] )
+//        {
+//            parentX[currentX][currentY - 1] = currentX;
+//            parentY[currentX][currentY - 1] = currentY;
+//            currentY--;
+//            cancelOpenNode(currentX, currentY);
+//            closeNode(currentX, currentY);
+//            return 2;
+//        }
+//    }
     else
     {
         openNode(currentX, currentY - 1);
@@ -159,18 +158,18 @@ int goLeft()
         ((currentX - 1) < 0) ||
         (closedList[currentX - 1][currentY] == true) ||
         (nodeValues[currentX - 1][currentY] == '5')) return 0;
-    else if (openedList[currentX - 1][currentY] == true)
-    {
-        if ( (gValues[currentX][currentY] + 1) < gValues[currentX - 1][currentY] )
-        {
-            parentX[currentX - 1][currentY] = currentX;
-            parentY[currentX - 1][currentY] = currentY;
-            currentX--;
-            cancelOpenNode(currentX, currentY);
-            closeNode(currentX, currentY);
-            return 2;
-        }
-    }
+//    else if (openedList[currentX - 1][currentY] == true)
+//    {
+//        if ( (gValues[currentX][currentY] + 1) < gValues[currentX - 1][currentY] )
+//        {
+//            parentX[currentX - 1][currentY] = currentX;
+//            parentY[currentX - 1][currentY] = currentY;
+//            currentX--;
+//            cancelOpenNode(currentX, currentY);
+//            closeNode(currentX, currentY);
+//            return 2;
+//        }
+//    }
     else
     {
         openNode(currentX - 1, currentY);
@@ -187,18 +186,18 @@ int goRight()
         ((currentX + 1) > 19) ||
         (closedList[currentX + 1][currentY] == true) ||
         (nodeValues[currentX + 1][currentY] == '5')) return 0;
-    else if (openedList[currentX + 1][currentY] == true)
-    {
-        if ( (gValues[currentX][currentY] + 1) < gValues[currentX + 1][currentY] )
-        {
-            parentX[currentX + 1][currentY] = currentX;
-            parentY[currentX + 1][currentY] = currentY;
-            currentX++;
-            cancelOpenNode(currentX, currentY);
-            closeNode(currentX, currentY);
-            return 2;
-        }
-    }
+//    else if (openedList[currentX + 1][currentY] == true)
+//    {
+//        if ( (gValues[currentX][currentY] + 1) < gValues[currentX + 1][currentY] )
+//        {
+//            parentX[currentX + 1][currentY] = currentX;
+//            parentY[currentX + 1][currentY] = currentY;
+//            currentX++;
+//            cancelOpenNode(currentX, currentY);
+//            closeNode(currentX, currentY);
+//            return 2;
+//        }
+//    }
     else
     {
         openNode(currentX + 1, currentY);
@@ -209,41 +208,60 @@ int goRight()
     }
 }
 
-int calculateLowestFXPos()
+void calculateLowestFPos()
 {
-    int lowest = 9999;
-    int lowestXPos = 9999;
+    int lowestF = 9999;
+    //Find lowest f amongst opened:
     for (int i = 0; i < 19; i++)
     {
         for (int j = 0; j < 19; j++)
         {
-            if ((openedList[i][j] == true) && (fValues[i][j] < lowest))
+            if ((openedList[i][j] == true) && (fValues[i][j] < lowestF))
             {
-                lowest = fValues[i][j];
-                lowestXPos = i;
+                lowestF = fValues[i][j];
+//                cout << "Lowest F found: " << lowestF << endl;
+                lowestFXPos = i;
+                lowestFYPos = j;
+//                cout << "lowestFXPos set as " << lowestFXPos << endl;
+//                cout << "lowestFYPos set as " << lowestFYPos << endl;
             }
         }
     }
-    return lowestXPos;
-}
 
-int calculateLowestFYPos()
-{
-    int lowest = 9999;
-    int lowestYPos = 9999;
+    //Find out if there are any duplicates of lowest value:
+    int duplicateCounter = 0;
     for (int i = 0; i < 19; i++)
     {
         for (int j = 0; j < 19; j++)
         {
-            if ((openedList[i][j] == true) && (fValues[i][j] < lowest))
+            if ((openedList[i][j] == true) && (fValues[i][j] == lowestF))
             {
-                lowest = fValues[i][j];
-                lowestYPos = j;
+                duplicateCounter++;
+//                cout << "Number of duplicates: " << duplicateCounter << endl;
             }
         }
     }
-
-    return lowestYPos;
+    // If there are more than 1 duplicates pick the one with the lowest opening count:
+    if (duplicateCounter > 1)
+    {
+        int lowestOpeningCount = 9999;
+        for (int i = 0; i < 19; i++)
+        {
+            for (int j = 0; j < 19; j++)
+            {
+                if ((openedList[i][j] == true) && (fValues[i][j] == lowestF) && (openingOrder[i][j] < lowestOpeningCount))
+                {
+//                    cout << "There are more than 1 duplicates." << endl;
+                    lowestOpeningCount = openingOrder[i][j];
+                    lowestFXPos = i;
+                    lowestFYPos = j;
+//                    cout << "Lowest opening count: " << lowestOpeningCount << endl;
+//                    cout << "Lowest F set as (x, y): ";
+//                    cout << lowestFXPos << ", " << lowestFYPos << endl;
+                }
+            }
+        }
+    }
 }
 
 int main()
@@ -251,8 +269,8 @@ int main()
     readNodeValuesFromFile();
     startListsAndArrays();
 
-    while ((currentX < 19) || (currentY < 19))
-    //for (int i = 0; i < 4; i++)
+    while ((currentX < 18) || (currentY < 18))
+    //for (int i = 0; i < 10; i++)
     {
         cancelOpenNode(currentX, currentY);
         closeNode(currentX, currentY);
@@ -260,22 +278,23 @@ int main()
         goDown();
         goLeft();
         goRight();
-        currentX = calculateLowestFXPos();
-        currentY = calculateLowestFYPos();
+        calculateLowestFPos();
+        currentX = lowestFXPos;
+        currentY = lowestFYPos;
     }
 
     for (int i = 19; i >= 0; i--)
     {
         for(int j = 0; j < 20; j++)
         {
-            if (nodeValues[j][i] == '5') cout << "5 ";
-            else cout << closedList[j][i] << " ";
+            if (nodeValues[j][i] == '5') cout << "5 "; else
+            cout << fValues[j][i] << " ";
         }
         cout << endl;
     }
 
-    cout << "Lowest FXPos: " << calculateLowestFXPos() << endl;
-    cout << "Lowest FYPos: " << calculateLowestFYPos() << endl;
+    cout << "Lowest FXPos: " << lowestFXPos << endl;
+    cout << "Lowest FYPos: " << lowestFYPos << endl;
     cout << "Current position (x,y): " << currentX << ", " << currentY << endl;
     return 0;
 }
