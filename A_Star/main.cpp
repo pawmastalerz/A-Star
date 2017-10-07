@@ -80,6 +80,11 @@ void calculateGValue(int x, int y)
     gValues[x][y] = gValues[parentX[x][y]][parentY[x][y]] + 1;
 }
 
+void calculateFValue(int x, int y)
+{
+    fValues[x][y] = gValues[x][y] + hValues[x][y];
+}
+
 int goUp()
 {
     if (((currentY + 1) > 19) || (closedList[currentX][currentY + 1] == true)) return 0;
@@ -88,7 +93,7 @@ int goUp()
         parentX[currentX][currentY + 1] = currentX;
         parentY[currentX][currentY + 1] = currentY;
         calculateGValue(currentX, currentY + 1);
-        //calculateHValue(currentX, currentY + 1);
+        calculateFValue(currentX, currentY + 1);
     }
 }
 
@@ -100,7 +105,7 @@ int goDown()
         parentX[currentX][currentY - 1] = currentX;
         parentY[currentX][currentY - 1] = currentY;
         calculateGValue(currentX, currentY - 1);
-        //calculateHValue(currentX, currentY - 1);
+        calculateFValue(currentX, currentY - 1);
     }
 }
 
@@ -112,7 +117,7 @@ int goLeft()
         parentX[currentX - 1][currentY] = currentX;
         parentY[currentX - 1][currentY] = currentY;
         calculateGValue(currentX - 1, currentY);
-        //calculateHValue(currentX - 1, currentY);
+        calculateFValue(currentX - 1, currentY);
     }
 }
 
@@ -124,7 +129,7 @@ int goRight()
         parentX[currentX + 1][currentY] = currentX;
         parentY[currentX + 1][currentY] = currentY;
         calculateGValue(currentX + 1, currentY);
-        //calculateHValue(currentX + 1, currentY);
+        calculateFValue(currentX + 1, currentY);
     }
 }
 
