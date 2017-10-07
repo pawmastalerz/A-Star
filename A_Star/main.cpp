@@ -184,7 +184,7 @@ int goRight()
 void calculateLowestFPos()
 {
     int lowestF = 9999;
-    //Find lowest f amongst opened:
+    //Find lowest F amongst opened:
     for (int i = 0; i < 20; i++)
     {
         for (int j = 0; j < 20; j++)
@@ -192,11 +192,8 @@ void calculateLowestFPos()
             if ((openedList[i][j] == true) && (fValues[i][j] < lowestF))
             {
                 lowestF = fValues[i][j];
-//                cout << "Lowest F found: " << lowestF << endl;
                 lowestFXPos = i;
                 lowestFYPos = j;
-//                cout << "lowestFXPos set as " << lowestFXPos << endl;
-//                cout << "lowestFYPos set as " << lowestFYPos << endl;
             }
         }
     }
@@ -210,7 +207,6 @@ void calculateLowestFPos()
             if ((openedList[i][j] == true) && (fValues[i][j] == lowestF))
             {
                 duplicateCount++;
-//                cout << "Number of duplicates: " << duplicateCount << endl;
             }
         }
     }
@@ -224,16 +220,27 @@ void calculateLowestFPos()
             {
                 if ((openedList[i][j] == true) && (fValues[i][j] == lowestF) && (openingOrder[i][j] < lowestOpeningCount))
                 {
-//                    cout << "There are more than 1 duplicates." << endl;
                     lowestOpeningCount = openingOrder[i][j];
                     lowestFXPos = i;
                     lowestFYPos = j;
-//                    cout << "Lowest opening count: " << lowestOpeningCount << endl;
-//                    cout << "Lowest F set as (x, y): ";
-//                    cout << lowestFXPos << ", " << lowestFYPos << endl;
                 }
             }
         }
+    }
+}
+
+void traceRoute()
+{
+    int selectedX = 19;
+    int selectedY = 19;
+    nodeValues[0][0] = '3';
+
+    while ((selectedX != 0) || (selectedY != 0) )
+    {
+        nodeValues[selectedX][selectedY] = '3';
+        int tempX = selectedX;
+        selectedX = parentX[selectedX][selectedY];
+        selectedY = parentY[tempX][selectedY];
     }
 }
 
@@ -254,18 +261,17 @@ int main()
         currentY = lowestFYPos;
     }
 
+    traceRoute();
+
     for (int i = 19; i >= 0; i--)
     {
         for(int j = 0; j < 20; j++)
         {
-            if (nodeValues[j][i] == '5') cout << "5 "; else
-            cout << parentY[j][i] << " ";
+            cout << nodeValues[j][i] << " ";
         }
         cout << endl;
     }
 
-    cout << "Lowest FXPos: " << lowestFXPos << endl;
-    cout << "Lowest FYPos: " << lowestFYPos << endl;
-    cout << "Current position (x,y): " << currentX << ", " << currentY << endl;
+    getchar();
     return 0;
 }
