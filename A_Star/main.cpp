@@ -20,6 +20,7 @@ int parentX[20][20];
 int parentY[20][20];
 
 
+
 void readNodeValuesFromFile()
 {
     FILE *inputGrid;
@@ -42,11 +43,11 @@ void readNodeValuesFromFile()
 
 void calculateHValues()
 {
-    for (int i = 19; i >= 0; i--)
+    for (int i = 0; i < 20; i++)
     {
         for(int j = 0; j < 20; j++)
         {
-            hValues[j][i] = j + i;
+            hValues[i][j] = 38 - j - i;
         }
     }
 }
@@ -68,6 +69,7 @@ void startListsAndArrays()
     }
     closedList[0][0] = true;
     gValues[0][0] = 0;
+    fValues[0][0] = 0;
 }
 
 void closeNode(int x, int y)
@@ -78,6 +80,11 @@ void closeNode(int x, int y)
 void openNode(int x, int y)
 {
     openedList[x][y] = true;
+}
+
+void cancelOpenNode(int x, int y)
+{
+    openedList[x][y] = false;
 }
 
 void calculateGValue(int x, int y)
@@ -102,6 +109,9 @@ int goUp()
         {
             parentX[currentX][currentY + 1] = currentX;
             parentY[currentX][currentY + 1] = currentY;
+            currentY++;
+            cancelOpenNode(currentX, currentY);
+            closeNode(currentX, currentY);
             return 2;
         }
     }
@@ -127,6 +137,9 @@ int goDown()
         {
             parentX[currentX][currentY - 1] = currentX;
             parentY[currentX][currentY - 1] = currentY;
+            currentY--;
+            cancelOpenNode(currentX, currentY);
+            closeNode(currentX, currentY);
             return 2;
         }
     }
@@ -152,6 +165,9 @@ int goLeft()
         {
             parentX[currentX - 1][currentY] = currentX;
             parentY[currentX - 1][currentY] = currentY;
+            currentX--;
+            cancelOpenNode(currentX, currentY);
+            closeNode(currentX, currentY);
             return 2;
         }
     }
@@ -177,6 +193,9 @@ int goRight()
         {
             parentX[currentX + 1][currentY] = currentX;
             parentY[currentX + 1][currentY] = currentY;
+            currentX++;
+            cancelOpenNode(currentX, currentY);
+            closeNode(currentX, currentY);
             return 2;
         }
     }
@@ -223,6 +242,7 @@ int calculateLowestFYPos()
             }
         }
     }
+
     return lowestYPos;
 }
 
@@ -231,29 +251,31 @@ int main()
     readNodeValuesFromFile();
     startListsAndArrays();
 
-
-    closeNode(currentX, currentY);
-    goUp();
-    goDown();
-    goLeft();
-    goRight();
-
-    currentX = calculateLowestFXPos();
-    currentY = calculateLowestFYPos();
-
-    closeNode(currentX, currentY); //8:06
+    while ((currentX < 19) || (currentY < 19))
+    //for (int i = 0; i < 4; i++)
+    {
+        cancelOpenNode(currentX, currentY);
+        closeNode(currentX, currentY);
+        goUp();
+        goDown();
+        goLeft();
+        goRight();
+        currentX = calculateLowestFXPos();
+        currentY = calculateLowestFYPos();
+    }
 
     for (int i = 19; i >= 0; i--)
     {
         for(int j = 0; j < 20; j++)
         {
-            cout << fValues[j][i] << " ";
+            if (nodeValues[j][i] == '5') cout << "5 ";
+            else cout << closedList[j][i] << " ";
         }
         cout << endl;
     }
 
-//    cout << calculateLowestFXPos() << endl;
-//    cout << calculateLowestFYPos() << endl;
-
+    cout << "Lowest FXPos: " << calculateLowestFXPos() << endl;
+    cout << "Lowest FYPos: " << calculateLowestFYPos() << endl;
+    cout << "Current position (x,y): " << currentX << ", " << currentY << endl;
     return 0;
 }
