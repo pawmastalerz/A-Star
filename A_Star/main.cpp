@@ -2,7 +2,7 @@
 //Under no circumstances don't copy it
 //for less than 4 honey - flavoured beers.
 //ALL RIGHTS RESERVED to Pawel Mastalerz
-//University of Warmia and Mazury, Poland
+//University of Warmia and Mazuria, Poland
 
 #include <iostream>
 #include <stdio.h>
@@ -64,9 +64,9 @@ void startListsAndArrays()
         {
             closedList[i][j] = false;
             openedList[i][j] = false;
-            calculateHValues();
         }
     }
+    calculateHValues();
     closedList[0][0] = true;
 }
 
@@ -244,6 +244,18 @@ void traceRoute()
     }
 }
 
+void showNodeValues()
+{
+    for (int i = 19; i >= 0; i--)
+    {
+        for(int j = 0; j < 20; j++)
+        {
+            cout << nodeValues[j][i] << " ";
+        }
+        cout << endl;
+    }
+}
+
 int main()
 {
     readNodeValuesFromFile();
@@ -262,16 +274,7 @@ int main()
     }
 
     traceRoute();
-
-    for (int i = 19; i >= 0; i--)
-    {
-        for(int j = 0; j < 20; j++)
-        {
-            cout << nodeValues[j][i] << " ";
-        }
-        cout << endl;
-    }
-
+    showNodeValues();
     getchar();
     return 0;
 }
