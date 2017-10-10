@@ -122,86 +122,6 @@ int step(int x, int y)
     }
 }
 
-//int goUp()
-//{
-//    if (
-//        ((currentY + 1) > 19) ||
-//        (closedList[currentX][currentY + 1] == true) ||
-//        (nodeValues[currentX][currentY + 1] == '5')) return 0;
-//    else if (openedList[currentX][currentY + 1] == true)
-//    {
-//        checkAlreadyOpened(currentX, currentY + 1);
-//    }
-//    else
-//    {
-//        openNode(currentX, currentY + 1);
-//        parentX[currentX][currentY + 1] = currentX;
-//        parentY[currentX][currentY + 1] = currentY;
-//        calculateGValue(currentX, currentY + 1);
-//        calculateFValue(currentX, currentY + 1);
-//    }
-//}
-//
-//int goDown()
-//{
-//    if (
-//        ((currentY - 1) < 0) ||
-//        (closedList[currentX][currentY - 1] == true) ||
-//        (nodeValues[currentX][currentY - 1] == '5')) return 0;
-//    else if (openedList[currentX][currentY - 1] == true)
-//    {
-//        checkAlreadyOpened(currentX, currentY - 1);
-//    }
-//    else
-//    {
-//        openNode(currentX, currentY - 1);
-//        parentX[currentX][currentY - 1] = currentX;
-//        parentY[currentX][currentY - 1] = currentY;
-//        calculateGValue(currentX, currentY - 1);
-//        calculateFValue(currentX, currentY - 1);
-//    }
-//}
-//
-//int goLeft()
-//{
-//    if (
-//        ((currentX - 1) < 0) ||
-//        (closedList[currentX - 1][currentY] == true) ||
-//        (nodeValues[currentX - 1][currentY] == '5')) return 0;
-//    else if (openedList[currentX - 1][currentY] == true)
-//    {
-//        checkAlreadyOpened(currentX - 1, currentY);
-//    }
-//    else
-//    {
-//        openNode(currentX - 1, currentY);
-//        parentX[currentX - 1][currentY] = currentX;
-//        parentY[currentX - 1][currentY] = currentY;
-//        calculateGValue(currentX - 1, currentY);
-//        calculateFValue(currentX - 1, currentY);
-//    }
-//}
-//
-//int goRight()
-//{
-//    if (
-//        ((currentX + 1) > 19) ||
-//        (closedList[currentX + 1][currentY] == true) ||
-//        (nodeValues[currentX + 1][currentY] == '5')) return 0;
-//    else if (openedList[currentX + 1][currentY] == true)
-//    {
-//        checkAlreadyOpened(currentX + 1, currentY);
-//    }
-//    else
-//    {
-//        openNode(currentX + 1, currentY);
-//        parentX[currentX + 1][currentY] = currentX;
-//        parentY[currentX + 1][currentY] = currentY;
-//        calculateGValue(currentX + 1, currentY);
-//        calculateFValue(currentX + 1, currentY);
-//    }
-//}
-
 void calculateLowestFPos()
 {
     int lowestF = 9999;
@@ -291,10 +211,6 @@ int main()
         step(currentX - 1, currentY);
         step(currentX + 1, currentY);
 
-//        goUp();
-//        goDown();
-//        goLeft();
-//        goRight();
         calculateLowestFPos();
         currentX = lowestFXPos;
         currentY = lowestFYPos;
